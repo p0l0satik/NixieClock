@@ -82,56 +82,28 @@ start:
 											sbic PINB, 0
 											RJMP seth 
 
-											
-											
-										
+											rcall convert
+											ldi r16, 0
 
-
-											mov r16, HOUR1
-											rcall choose
-											out PORTC, r17
-											ldi r16, 0b00000001
-											out PORTD, R16
-											rcall tup
-
-											mov r16, HOUR2
-											rcall choose
-											out PORTC, r17
-											ldi r16, 0b00000010
-											out PORTD, R16
-											rcall tup
-
-
-											mov r16, MIN1
-											rcall choose
-											out PORTC, r17
-											ldi r16, 0b00000100
-											out PORTD, R16
-											rcall tup
-
-
-											mov r16, MIN2
-											rcall choose
-											out PORTC, r17
-											ldi r16, 0b00001000
-											out PORTD, R16
-											rcall tup
-
-
-											mov r16, SEC1
-											rcall choose
-											out PORTC, r17
-											ldi r16, 0b00010000
-											out PORTD, R16
-											rcall tup
-
-
-											mov r16, SEC2
-											rcall choose
-											out PORTC, r17
-											ldi r16, 0b00100000
-											out PORTD, R16
-											rcall tup
+light_seg:										
+												mov r17, r16
+												ldi YL, low(time_array)
+												ldi YH, high(time_array)
+												add YL, r16
+												adic YL, 0
+												ld r16, Y
+												rcall choose
+												out PORTC, r17
+												ldi r16, 1
+	mv:											cpi r17, 0
+													breq fn_mv
+													lsl r16
+													subi r17, 1
+													rjmp mv
+	fn_mv:										out PORTD, r16
+												rcall tup
+												cpi r16, 6
+												brlo light_seg 
 	
 	
 											rjmp start
@@ -139,13 +111,26 @@ start:
 ;PRocedures
 
 
-;выбор сегмента и цифры
-light_seg:									
+;converts registers to memory
+convert:
+											ldi YL, low(time_array)
+											ldi YH, high(time_array)
+											st  Y+,  HOUR1
+											st  Y+,  HOUR2
+											st  Y+,  MIN1
+											st  Y+,  MIN2
+											st  Y+,  SEC1
+											st  Y,   SEC2
+											ret
+
+
+
+
 
 ;задержка					
 tup:  
-												ldi r17, 100
-												ldi r19, 3
+											ldi r17, 100
+											ldi r19, 3
 
 											zad:
 												subi r17, 1
@@ -157,13 +142,14 @@ tup:
 													brsh zad
 												ret
 ;выбор цифры для индикации
+; the number send/received via R16
 choose:
 											LDI ZL, low(nums * 2)
 											LDI ZH, high(nums * 2)
 											add ZL, r16
 											ADIC ZH, 0
 
-											LPM r17, Z
+											LPM r16, Z ;was r17
 											ret
 
 										.include "IIC_logic.asm"
