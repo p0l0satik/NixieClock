@@ -73,45 +73,9 @@ nums: .db 0b00001100, 0b00000100, 0b00000010, 0b00001000, 0b00000001, 0b00001011
 
 start:
 											STSI RTCAddr, 0x02
-											rcall RTC_READ
-	
-										// кнопка на порте Б6 инвертирована
-											SBIC PINB, 1
-											RJMP setm
-		
-											sbic PINB, 0
-											RJMP seth 
-
-											rcall convert
-											ldi r16, 0
-
-light_seg:										
-												mov r17, r16
-												ldi YL, low(time_array)
-												ldi YH, high(time_array)
-												add YL, r16
-												adic YL, 0
-												ld r16, Y
-												rcall choose
-												out PORTC, r17
-												ldi r16, 1
-	mv:											cpi r17, 0
-													breq fn_mv
-													lsl r16
-													subi r17, 1
-													rjmp mv
-	fn_mv:										out PORTD, r16
-												rcall tup
-												cpi r16, 6
-												brlo light_seg 
-	
-	
-											rjmp start
-
-;PRocedures
-
-
-;converts registers to memory
+											;rcall RTC_READ
+											ldi HOUR1, 0x12
+											;converts registers to memory
 convert:
 											ldi YL, low(time_array)
 											ldi YH, high(time_array)
@@ -121,7 +85,48 @@ convert:
 											st  Y+,  MIN2
 											st  Y+,  SEC1
 											st  Y,   SEC2
-											ret
+											
+
+
+	
+										// кнопка на порте Б6 инвертирована
+											SBIC PINB, 1
+											RJMP setm
+		
+											sbic PINB, 0
+											RJMP seth 
+
+											
+											ldi r16, 0
+
+light_seg:										
+												mov r17, r16
+												push r16
+												ldi YL, low(time_array)
+												ldi YH, high(time_array)
+												add YL, r16
+												adic YL, 0
+												ld r16, Y
+												rcall choose
+												out PORTC, r16
+												ldi r16, 1
+	mv:											cpi r17, 0
+													breq fn_mv
+													lsl r16
+													subi r17, 1
+													rjmp mv
+	fn_mv:										out PORTD, r16
+												rcall tup
+												pop r16
+												inc r16
+												cpi r16, 7
+												brlo light_seg 
+	
+	
+											rjmp start
+
+;PRocedures
+
 
 
 
