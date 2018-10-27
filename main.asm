@@ -42,15 +42,17 @@ current_seg:								.byte	1
 
 
 .include "Macro.asm"
-											.def HOUR1 = R20
-											.def HOUR2 = R21
-											.def MIN1 = R22
-											.def MIN2 = R23
-											.def HOUR = R24
-											.def SEC1 = R25										
-											.def SEC2 = R26
+											.equ HOUR1 = time_array
+											.equ HOUR2 = time_array + 1
+											.equ MIN1 = time_array + 2
+											.equ MIN2 = time_array + 3
+											
+											.equ SEC1 = time_array + 4									
+											.equ SEC2 = time_array + 5
 																						
 											.def OSRG = R18
+											.def HOUR = R24
+										
 
 nums: .db 0b00001100, 0b00000100, 0b00000010, 0b00001000, 0b00000001, 0b00001011, 0b00001010, 0b00000011, 0b00001001, 0b00000000
 
