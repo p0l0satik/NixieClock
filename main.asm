@@ -74,7 +74,17 @@ nums: .db 0b00001100, 0b00000100, 0b00000010, 0b00001000, 0b00000001, 0b00001011
 start:
 											STSI RTCAddr, 0x02
 											rcall RTC_READ
-											ldi HOUR1, 0x12
+
+											
+											// кнопка на порте Б6 инвертирована
+											SBIC PINB, 1
+											RJMP setm
+		
+											sbic PINB, 0
+											RJMP seth 
+
+											
+
 											;converts registers to memory
 convert:
 											ldi YL, low(time_array)
@@ -88,14 +98,7 @@ convert:
 											
 
 
-	
-										// кнопка на порте Б6 инвертирована
-											SBIC PINB, 1
-											RJMP setm
-		
-											sbic PINB, 0
-											RJMP seth 
-
+											
 											
 											ldi r16, 0
 
