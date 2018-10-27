@@ -74,8 +74,9 @@ nums: .db 0b00001100, 0b00000100, 0b00000010, 0b00001000, 0b00000001, 0b00001011
 start:
 											STSI RTCAddr, 0x02
 											rcall RTC_READ
-	
-										// кнопка на порте Б6 инвертирована
+
+											
+											// кнопка на порте Б6 инвертирована
 											SBIC PINB, 1
 											RJMP setm
 		
@@ -83,55 +84,46 @@ start:
 											RJMP seth 
 
 											
+
+											;converts registers to memory
+convert:
+											ldi YL, low(time_array)
+											ldi YH, high(time_array)
+											st  Y+,  HOUR1
+											st  Y+,  HOUR2
+											st  Y+,  MIN1
+											st  Y+,  MIN2
+											st  Y+,  SEC1
+											st  Y,   SEC2
 											
-										
 
 
-											mov r16, HOUR1
-											rcall choose
-											out PORTC, r17
-											ldi r16, 0b00000001
-											out PORTD, R16
-											rcall tup
+											
+											
+											ldi r16, 0
 
-											mov r16, HOUR2
-											rcall choose
-											out PORTC, r17
-											ldi r16, 0b00000010
-											out PORTD, R16
-											rcall tup
-
-
-											mov r16, MIN1
-											rcall choose
-											out PORTC, r17
-											ldi r16, 0b00000100
-											out PORTD, R16
-											rcall tup
-
-
-											mov r16, MIN2
-											rcall choose
-											out PORTC, r17
-											ldi r16, 0b00001000
-											out PORTD, R16
-											rcall tup
-
-
-											mov r16, SEC1
-											rcall choose
-											out PORTC, r17
-											ldi r16, 0b00010000
-											out PORTD, R16
-											rcall tup
-
-
-											mov r16, SEC2
-											rcall choose
-											out PORTC, r17
-											ldi r16, 0b00100000
-											out PORTD, R16
-											rcall tup
+light_seg:										
+												mov r17, r16
+												push r16
+												ldi YL, low(time_array)
+												ldi YH, high(time_array)
+												add YL, r16
+												adic YL, 0
+												ld r16, Y
+												rcall choose
+												out PORTC, r16
+												ldi r16, 1
+	mv:											cpi r17, 0
+													breq fn_mv
+													lsl r16
+													subi r17, 1
+													rjmp mv
+	fn_mv:										out PORTD, r16
+												rcall tup
+												pop r16
+												inc r16
+												cpi r16, 7
+												brlo light_seg 
 	
 	
 											rjmp start
@@ -139,13 +131,14 @@ start:
 ;PRocedures
 
 
-;выбор сегмента и цифры
-light_seg:									
+
+
+
 
 ;задержка					
 tup:  
-												ldi r17, 100
-												ldi r19, 3
+											ldi r17, 100
+											ldi r19, 3
 
 											zad:
 												subi r17, 1
@@ -157,13 +150,14 @@ tup:
 													brsh zad
 												ret
 ;выбор цифры для индикации
+; the number send/received via R16
 choose:
 											LDI ZL, low(nums * 2)
 											LDI ZH, high(nums * 2)
 											add ZL, r16
 											ADIC ZH, 0
 
-											LPM r17, Z
+											LPM r16, Z ;was r17
 											ret
 
 										.include "IIC_logic.asm"
