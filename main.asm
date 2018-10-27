@@ -73,7 +73,7 @@ nums: .db 0b00001100, 0b00000100, 0b00000010, 0b00001000, 0b00000001, 0b00001011
 
 start:
 											STSI RTCAddr, 0x02
-											;rcall RTC_READ
+											rcall RTC_READ
 											ldi HOUR1, 0x12
 											;converts registers to memory
 convert:
