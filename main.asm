@@ -89,7 +89,6 @@ start:
 
 											;converts registers to memory
 convert:
-											ldi YL, low(time_array)
 										;	ldi YL, low(time_array)
 										;	ldi YH, high(time_array)
 										;	st  Y+,  HOUR1
