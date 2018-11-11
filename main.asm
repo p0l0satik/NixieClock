@@ -90,13 +90,14 @@ start:
 											;converts registers to memory
 convert:
 											ldi YL, low(time_array)
-											ldi YH, high(time_array)
-											st  Y+,  HOUR1
-											st  Y+,  HOUR2
-											st  Y+,  MIN1
-											st  Y+,  MIN2
-											st  Y+,  SEC1
-											st  Y,   SEC2
+										;	ldi YL, low(time_array)
+										;	ldi YH, high(time_array)
+										;	st  Y+,  HOUR1
+										;	st  Y+,  HOUR2
+										;	st  Y+,  MIN1
+										;	st  Y+,  MIN2
+										;	st  Y+,  SEC1
+											;st  Y,   SEC2
 											
 
 
