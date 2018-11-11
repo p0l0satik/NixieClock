@@ -68,8 +68,7 @@ nums: .db 0b00001100, 0b00000100, 0b00000010, 0b00001000, 0b00000001, 0b00001011
 											out SPL, r16
 											LDI R16, high(RAMEND)
 											out SPH, r16
-											LDI SEC1, 3
-											LDI SEC2, 0
+											
 
 	
 
