@@ -53,7 +53,7 @@
 											
 
 											;SETING TIME OF THE CLOCK 
-setm:										LDM r16, MIN2
+setm:										LDS r16, MIN2
 											INC r16
 											CPI r16, 10
 											BREQ setm1

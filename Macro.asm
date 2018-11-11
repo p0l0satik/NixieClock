@@ -9,7 +9,7 @@
 	LDS R16, @2
 	STS @1, R16
 	POP R16
-.END
+.ENDM
 
 .MACRO OUTI
 	PUSH r16
