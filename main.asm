@@ -69,8 +69,12 @@ nums: .db 0b00001100, 0b00000100, 0b00000010, 0b00001000, 0b00000001, 0b00001011
 											LDI R16, high(RAMEND)
 											out SPH, r16
 											
-
-	
+											;STSI HOUR1, 2
+											;STSI HOUR2, 1
+											;STSI MIN1, 0
+											;STSI MIN2, 3
+											;STSI RTCAddr, 0x02
+											;rcall RTC_WRITE
 
 start:
 											STSI RTCAddr, 0x02
