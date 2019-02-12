@@ -88,6 +88,8 @@ start:
 											sbic PINB, 0
 											RJMP seth 
 
+											sbis PINB, 6
+											RJMP start
 											
 
 											;converts registers to memory
@@ -106,6 +108,13 @@ convert:
 											
 											
 											ldi r16, 0
+											Ldi r18, 6
+											rcall light_seg
+
+											rjmp start
+
+;PRocedures
+
 
 light_seg:										
 												mov r17, r16
@@ -127,14 +136,11 @@ light_seg:
 												rcall tup
 												pop r16
 												inc r16
-												cpi r16, 7
+												cp r16, r18
 												brlo light_seg 
 	
-	
-											rjmp start
-
-;PRocedures
-
+												ret
+								
 
 
 

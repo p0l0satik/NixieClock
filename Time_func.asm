@@ -50,8 +50,25 @@
 											pop r16
 											RET
 											
-											
+set_hour1:
+											ldi r16, 0
+											ldi r18, 2
+											rcall light_seg
 
+											SBIC PINB, 1
+											incm HOUR1
+		
+											sbic PINB, 0
+											decm HOUR1
+											
+											lds r16, HOUR1
+											cpi  r16, 10
+											BRLO not_bigger1
+												STSI HOUR1, 0
+
+not_bigger1:								sbic PINB, 6
+											rjmp set_hour1
+											rjmp start
 											;SETING TIME OF THE CLOCK 
 setm:										;LDS r16, MIN2
 											;INC r16
