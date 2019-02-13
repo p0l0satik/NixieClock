@@ -51,24 +51,76 @@
 											RET
 											
 set_hour1:
-											ldi r16, 0
-											ldi r18, 2
-											rcall light_seg
-
-											SBIC PINB, 1
-											incm HOUR1
-		
-											sbic PINB, 0
-											decm HOUR1
+											rcall tup
+											rcall tup
+											rcall tup
+											push r16
 											
-											lds r16, HOUR1
-											cpi  r16, 10
-											BRLO not_bigger1
-												STSI HOUR1, 0
+											LDS r16, HOUR1
+cycle1:											;mov r17, r16
+												push r16
+												rcall choose
+												out PORTC, r16
+												ldi r16, 0b00000001
+												out PORTD, r16
+												pop r16
 
-not_bigger1:								sbic PINB, 6
-											rjmp set_hour1
-											rjmp start
+												
+
+												
+												SBIC PINB, 1
+												rcall inc_t
+
+												sbic PINB, 0
+												rcall dec_t
+											
+												cpi  r16, 10
+												BRLO not_bigger1
+													STSI HOUR1, 0
+												STS HOUR1, R16
+
+not_bigger1:									in r17, PINB
+												SBRS r17, 6
+												rjmp start
+												;pop r16
+												rjmp cycle1
+
+inc_t:
+											inc r16
+dreb1:										rcall tup
+											rcall tup
+											IN R17, PINB
+											SBRS R17, 1
+											ret
+											rjmp dreb1
+											
+dec_t:
+											dec r16
+dreb2:										rcall tup
+											rcall tup
+											IN R17, PINB
+											SBRS R17, 0
+											ret
+											rjmp dreb2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 											;SETING TIME OF THE CLOCK 
 setm:										;LDS r16, MIN2
 											;INC r16
@@ -132,4 +184,4 @@ end_set:									;IN R16, PINB
 											;SBRS R16, 3
 											;RJMP quit
 
-											RJMP start
+											;RJMP start

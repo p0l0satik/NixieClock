@@ -89,7 +89,7 @@ start:
 											RJMP seth 
 
 											sbis PINB, 6
-											RJMP start
+											RJMP set_hour1
 											
 
 											;converts registers to memory
