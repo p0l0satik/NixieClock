@@ -28,6 +28,7 @@
 											STS HOUR2, r16
 											pop r16
 											RET
+;========================
 
 		pack:								push r16
 											LDI R16,0
@@ -49,13 +50,15 @@
 
 											pop r16
 											RET
+;==========================
 											
 set_hour1:
 											rcall tup
 											rcall tup
 											rcall tup
 											push r16
-											
+											push r17
+
 											LDS r16, HOUR1
 cycle1:											;mov r17, r16
 												push r16
@@ -80,11 +83,26 @@ cycle1:											;mov r17, r16
 												STS HOUR1, R16
 
 not_bigger1:									in r17, PINB
-												SBRS r17, 6
-												rjmp start
-												;pop r16
-												rjmp cycle1
+												rcall tup
+												rcall tup
+												SBRC r17, 6
+													rjmp cycle1 // продолжаем цикл
+												pop r16 //идем к следующему сегменту
+												pop r17
+												rcall end_btn
+												ret
 
+;===========================
+end_btn:										rcall tup
+												rcall tup
+												in r17, PINB
+												SBRS r17, 6
+													rjmp end_btn
+												ret
+
+
+
+;============================
 inc_t:
 											inc r16
 dreb1:										rcall tup
@@ -93,7 +111,7 @@ dreb1:										rcall tup
 											SBRS R17, 1
 											ret
 											rjmp dreb1
-											
+;=============================											
 dec_t:
 											dec r16
 dreb2:										rcall tup

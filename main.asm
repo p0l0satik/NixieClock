@@ -82,11 +82,11 @@ start:
 
 											
 											// кнопка на порте Б6 инвертирована
-											SBIC PINB, 1
-											RJMP setm
+											;SBIC PINB, 1
+											;RJMP setm
 		
-											sbic PINB, 0
-											RJMP seth 
+											;sbic PINB, 0
+											;RJMP seth 
 
 											sbis PINB, 6
 											RJMP set_hour1
@@ -162,6 +162,7 @@ tup:
 												ret
 ;выбор цифры для индикации
 ; the number send/received via R16
+											
 choose:
 											LDI ZL, low(nums * 2)
 											LDI ZH, high(nums * 2)
@@ -173,4 +174,3 @@ choose:
 
 										.include "IIC_logic.asm"
 										.include "Time_func.asm"
-
