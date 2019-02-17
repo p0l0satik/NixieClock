@@ -1,0 +1,2 @@
+@ECHO OFF
+"E:\AvrAssembler2\avrasm2.exe" -S "C:\Users\denis\Desktop\prog\NixieClock\labels.tmp" -fI -W+ie -C V2E -o "C:\Users\denis\Desktop\prog\NixieClock\nixie_clock.hex" -d "C:\Users\denis\Desktop\prog\NixieClock\nixie_clock.obj" -e "C:\Users\denis\Desktop\prog\NixieClock\nixie_clock.eep" -m "C:\Users\denis\Desktop\prog\NixieClock\nixie_clock.map" "C:\Users\denis\Desktop\prog\NixieClock\main.asm"

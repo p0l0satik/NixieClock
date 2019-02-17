@@ -19,6 +19,7 @@ PortD - lamps
 	
 
 */
+.include "m88PAdef.inc"
 											.dseg
 RTCAddr:									.byte	1
 
